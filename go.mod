@@ -1,4 +1,4 @@
-module github.com/Get-me-in/external
+module gitlab.com/projectreferral/util
 
 go 1.13
 
