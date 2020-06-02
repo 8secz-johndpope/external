@@ -3,9 +3,9 @@ package util
 import (
 	"crypto/rand"
 	"fmt"
-	"github.com/Get-me-in/account-api/configs"
-	dynamo_lib "github.com/Get-me-in/external/pkg/dynamodb"
-	"github.com/Get-me-in/queueing-api/client"
+	"gitlab.com/projectreferral/account-api/configs"
+	dynamo_lib "gitlab.com/projectreferral/util/pkg/dynamodb"
+	"gitlab.com/projectreferral/queueing-api/client"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"log"
 )
