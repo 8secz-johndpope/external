@@ -3,21 +3,21 @@ package util
 import (
 	"crypto/rand"
 	"fmt"
-	"gitlab.com/projectreferral/account-api/configs"
-	dynamo_lib "gitlab.com/projectreferral/util/pkg/dynamodb"
-	"gitlab.com/projectreferral/queueing-api/client"
 	"github.com/aws/aws-sdk-go/aws/credentials"
+	"gitlab.com/projectreferral/util/client"
+	dynamo_lib "gitlab.com/projectreferral/util/pkg/dynamodb"
 	"log"
 )
 
 type ServiceConfigs struct {
-	Environment  string
-	Region       string
-	Table        string
-	SearchParam  string
-	GenericModel interface{}
-	BrokerUrl    string
-	Port         string
+	Environment  	string
+	Region       	string
+	Table        	string
+	SearchParam  	string
+	GenericModel 	interface{}
+	BrokerUrl    	string
+	Port         	string
+	Env				string
 }
 
 //internal specific configs are loaded at runtime
@@ -30,7 +30,7 @@ func (sc *ServiceConfigs) LoadEnvConfigs() {
 //DynamoDB configs
 func (sc *ServiceConfigs) LoadDynamoDBConfigs() *dynamo_lib.Wrapper {
 
-	switch configs.Env {
+	switch sc.Env {
 	case "UAT":
 		sc.Table = "uat-" + sc.Table
 	case "PROD":
