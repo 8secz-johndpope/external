@@ -17,7 +17,6 @@ type ServiceConfigs struct {
 	GenericModel 	interface{}
 	BrokerUrl    	string
 	Port         	string
-	Env				string
 }
 
 //internal specific configs are loaded at runtime
@@ -30,7 +29,7 @@ func (sc *ServiceConfigs) LoadEnvConfigs() {
 //DynamoDB configs
 func (sc *ServiceConfigs) LoadDynamoDBConfigs() *dynamo_lib.Wrapper {
 
-	switch sc.Env {
+	switch sc.Environment {
 	case "UAT":
 		sc.Table = "uat-" + sc.Table
 	case "PROD":
