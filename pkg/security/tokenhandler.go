@@ -91,6 +91,11 @@ func GetClaimsOfJWT() *jwt.StandardClaims {
 //Some tokens can only authenticate with specific endpoints
 func WrapHandlerWithSpecialAuth(handler http.HandlerFunc, claim string) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+
+		if (*req).Method == "OPTIONS" {
+			return
+		}
+		
 		a := req.Header.Get("Authorization")
 
 		//empty header
