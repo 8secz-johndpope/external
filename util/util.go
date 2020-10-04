@@ -4,7 +4,9 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws/credentials"
-	"gitlab.com/projectreferral/util/client"
+	"gitlab.com/projectreferral/util/client/rabbitmq"
+	"gitlab.com/projectreferral/util/client/s3"
+	"gitlab.com/projectreferral/util/client/s3/models"
 	dynamo_lib "gitlab.com/projectreferral/util/pkg/dynamodb"
 	"log"
 )
@@ -49,11 +51,19 @@ func (sc *ServiceConfigs) LoadDynamoDBConfigs() *dynamo_lib.Wrapper {
 }
 
 //RabbitMQ configs
-func (sc *ServiceConfigs) LoadRabbitMQConfigs() *client.DefaultQueueClient {
+func (sc *ServiceConfigs) LoadRabbitMQConfigs() *rabbitmq.DefaultQueueClient {
 
-	client := &client.DefaultQueueClient{}
+	client := &rabbitmq.DefaultQueueClient{}
 	client.SetupURL(sc.BrokerUrl)
 
+	return client
+}
+
+//S3 configs
+func (sc *ServiceConfigs) LoadS3BucketConfigs(cfg *models.S3Configs) *s3.DefaultBucketClient {
+
+	client := &s3.DefaultBucketClient{}
+	client.SetConfigs(cfg)
 	return client
 }
 

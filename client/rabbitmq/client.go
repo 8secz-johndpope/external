@@ -1,10 +1,10 @@
-package client
+package rabbitmq
 
 import (
 	"bytes"
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"gitlab.com/projectreferral/util/client/models"
+	"gitlab.com/projectreferral/util/client/rabbitmq/models"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -25,7 +25,7 @@ type QueueClient interface {
 
 	QueueBind(client *http.Client, bind models.QueueBind) (resp *http.Response, err error)
 
-	Publish(client *http.Client, publish models.ExchangePublish ) (resp *http.Response, err error)
+	Publish(client *http.Client, publish models.ExchangePublish) (resp *http.Response, err error)
 
 	Consume(client *http.Client, consume models.QueueConsume) (resp *http.Response, err error)
 
