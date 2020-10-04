@@ -48,7 +48,7 @@ func (sc *ServiceConfigs) LoadDynamoDBConfigs() *dynamo_lib.Wrapper {
 	return dynamoDBInstance
 }
 
-//DynamoDB configs
+//RabbitMQ configs
 func (sc *ServiceConfigs) LoadRabbitMQConfigs() *client.DefaultQueueClient {
 
 	client := &client.DefaultQueueClient{}

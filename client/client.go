@@ -10,9 +10,9 @@ import (
 	"net/http"
 )
 
-type HttpReponse func(*http.Response, error)
+type HttpResponse func(*http.Response, error)
 
-type HandleMessage func(qm *models.QueueMessage, err error, qc QueueClient) (sm models.SubscribeMessage, hr HttpReponse)
+type HandleMessage func(qm *models.QueueMessage, err error, qc QueueClient) (sm models.SubscribeMessage, hr HttpResponse)
 
 type QueueClient interface {
 	SetupURL(url string)
