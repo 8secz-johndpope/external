@@ -19,6 +19,7 @@ type ServiceConfigs struct {
 	GenericModel 	interface{}
 	BrokerUrl    	string
 	Port         	string
+	S3Config		*models.S3Configs
 }
 
 //internal specific configs are loaded at runtime
@@ -60,10 +61,10 @@ func (sc *ServiceConfigs) LoadRabbitMQConfigs() *rabbitmq.DefaultQueueClient {
 }
 
 //S3 configs
-func (sc *ServiceConfigs) LoadS3BucketConfigs(cfg *models.S3Configs) *s3.DefaultBucketClient {
+func (sc *ServiceConfigs) LoadS3BucketConfigs() *s3.DefaultBucketClient {
 
 	client := &s3.DefaultBucketClient{}
-	client.SetConfigs(cfg)
+	client.SetConfigs(sc.S3Config)
 	return client
 }
 

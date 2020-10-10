@@ -14,9 +14,9 @@ import (
 
 type Client interface {
 	Init()
-	UploadFile()
-	DownloadFile()
-	PutEncryption()
+	UploadFile(r *http.Request, name string)
+	DownloadFile(name string)
+	PutEncryption(key string)
 }
 
 type DefaultBucketClient struct {
