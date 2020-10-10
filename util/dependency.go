@@ -4,7 +4,9 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws/credentials"
-	"gitlab.com/projectreferral/util/client"
+	"gitlab.com/projectreferral/util/client/rabbitmq"
+	"gitlab.com/projectreferral/util/client/s3"
+	"gitlab.com/projectreferral/util/client/s3/models"
 	dynamo_lib "gitlab.com/projectreferral/util/pkg/dynamodb"
 	"log"
 )
@@ -17,6 +19,7 @@ type ServiceConfigs struct {
 	GenericModel 	interface{}
 	BrokerUrl    	string
 	Port         	string
+	S3Config		*models.S3Configs
 }
 
 //internal specific configs are loaded at runtime
@@ -48,12 +51,20 @@ func (sc *ServiceConfigs) LoadDynamoDBConfigs() *dynamo_lib.Wrapper {
 	return dynamoDBInstance
 }
 
-//DynamoDB configs
-func (sc *ServiceConfigs) LoadRabbitMQConfigs() *client.DefaultQueueClient {
+//RabbitMQ configs
+func (sc *ServiceConfigs) LoadRabbitMQConfigs() *rabbitmq.DefaultQueueClient {
 
-	client := &client.DefaultQueueClient{}
+	client := &rabbitmq.DefaultQueueClient{}
 	client.SetupURL(sc.BrokerUrl)
 
+	return client
+}
+
+//S3 configs
+func (sc *ServiceConfigs) LoadS3BucketConfigs() *s3.DefaultBucketClient {
+
+	client := &s3.DefaultBucketClient{}
+	client.SetConfigs(sc.S3Config)
 	return client
 }
 

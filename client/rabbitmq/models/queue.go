@@ -64,16 +64,16 @@ type QueueQos struct {
 }
 
 type QueueSubscribe struct {
-	URL              string          `json:"url"`
-	Name             string          `json:"name"`
-	Consumer         string          `json:"consumer"`
-	Exclusive        bool            `json:"exclusive"`
-	NoLocal	         bool            `json:"nolocal"`
-	NoWait           bool            `json:"nowait"`
-	MaxRetry         int             `json:"maxretry"`
-	Timeout          time.Duration   `json:"timeout"`
-	Qos              QueueQos        `json:"qos"`
-	Arguments        amqp.Table      `json:"arguments,omitempty"`
+	URL       string        `json:"url"`
+	Name      string        `json:"name"`
+	Consumer  string        `json:"consumer"`
+	Exclusive bool          `json:"exclusive"`
+	NoLocal   bool          `json:"nolocal"`
+	NoWait    bool          `json:"nowait"`
+	MaxRetry  int           `json:"maxretry"`
+	Timeout   time.Duration `json:"timeout"`
+	Qos       QueueQos      `json:"qos"`
+	Arguments amqp.Table    `json:"arguments,omitempty"`
 }
 
 type QueueSubscribeId struct {
@@ -94,19 +94,19 @@ type QueueFailedMessage struct {
 }
 
 type MessageAcknowledge struct {
-	SubID            QueueSubscribeId  `json:"subID"`
-	ID               uint64            `json:"id"`
-	Body           []byte              `json:"body"`	
-	Acknowledge      bool              `json:"acknowledge"`
-	Requeue          bool              `json:"requeue,omitempty"` //only valid if acknowledge is false
-	Multiple         bool              `json:"multiple"`
+	SubID       QueueSubscribeId `json:"subID"`
+	ID          uint64           `json:"id"`
+	Body        []byte           `json:"body"`
+	Acknowledge bool             `json:"acknowledge"`
+	Requeue     bool             `json:"requeue,omitempty"` //only valid if acknowledge is false
+	Multiple    bool             `json:"multiple"`
 }
 
 type MessageReject struct {
-	SubID            QueueSubscribeId  `json:"subID"`
-	ID               uint64            `json:"id"`
-	Body           []byte              `json:"body"`
-	Requeue          bool              `json:"requeue"`
+	SubID   QueueSubscribeId `json:"subID"`
+	ID      uint64           `json:"id"`
+	Body    []byte           `json:"body"`
+	Requeue bool             `json:"requeue"`
 }
 
 func (ma MessageAcknowledge) GetID() string {
