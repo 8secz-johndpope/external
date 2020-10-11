@@ -14,9 +14,9 @@ import (
 
 type Client interface {
 	Init()
-	UploadFile(r *http.Request, name string)
-	DownloadFile(name string)
-	PutEncryption(key string)
+	UploadFile(r *http.Request, name string) (*s3manager.UploadOutput,error)
+	DownloadFile(name string) (*os.File,int64,error)
+	PutEncryption(key string) (*s3.PutBucketEncryptionOutput,error)
 }
 
 type DefaultBucketClient struct {
