@@ -12,10 +12,11 @@ import (
 	"os"
 )
 
+// exposed methods that implementation/consumer can access
 type Client interface {
 	Init()
 	UploadFile(r *http.Request, name string) (*s3manager.UploadOutput,error)
-	DownloadFile(name string) (*os.File,int64,error)
+	DownloadFile(name string) (*os.File,error)
 	PutEncryption(key string) (*s3.PutBucketEncryptionOutput,error)
 }
 
@@ -45,7 +46,9 @@ func (c *DefaultBucketClient) Init() {
 }
 
 func (c *DefaultBucketClient) UploadFile(r *http.Request, name string) (*s3manager.UploadOutput,error) {
-	sizeErr := r.ParseMultipartForm(c.configs.PartSize) // Limit size to part size
+
+	// Limit file size
+	sizeErr := r.ParseMultipartForm(c.configs.PartSize)
 
 	if !HandleError(sizeErr)  {
 
@@ -88,17 +91,17 @@ func (c *DefaultBucketClient) UploadFile(r *http.Request, name string) (*s3manag
 	return nil, sizeErr
 }
 
-func (c *DefaultBucketClient) DownloadFile(name string) (*os.File,int64,error) {
+func (c *DefaultBucketClient) DownloadFile(name string) (*os.File,error) {
 	file, fErr := os.Create(c.configs.DownloadLocation + name)
 	if !HandleError(fErr) && file == nil {
 		log.Println("error creating file")
-		return nil, -1, nil
+		return nil,  nil
 	}
 
 	defer file.Close()
 
 	downloader := s3manager.NewDownloader(c.Session)
-	size, err := downloader.Download(file, &s3.GetObjectInput{
+	_, err := downloader.Download(file, &s3.GetObjectInput{
 		Bucket: aws.String(c.configs.Bucket),
 		Key:    aws.String(name),
 		SSECustomerAlgorithm: aws.String(c.configs.EncryptionAlgorithm),
@@ -106,10 +109,10 @@ func (c *DefaultBucketClient) DownloadFile(name string) (*os.File,int64,error) {
 
 	})
 	if !HandleError(err) {
-		return file, size, err
+		return file, err
 	}
 
-	return file, size, nil
+	return file, nil
 }
 
 //function for putting KMS key
