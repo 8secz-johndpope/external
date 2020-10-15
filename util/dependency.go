@@ -23,14 +23,14 @@ type ServiceConfigs struct {
 }
 
 //internal specific configs are loaded at runtime
-func (sc *ServiceConfigs) LoadEnvConfigs() {
+func (sc *ServiceConfigs) SetEnvConfigs() {
 
 	log.Printf("Environment: %s\n", sc.Environment)
 	log.Printf("Running on %s\n", sc.Port)
 }
 
-//DynamoDB configs
-func (sc *ServiceConfigs) LoadDynamoDBConfigs() *dynamo_lib.Wrapper {
+//Loads DynamoDB configs and builds a client version
+func (sc *ServiceConfigs) SetDynamoDBConfigsAndBuild() *dynamo_lib.Wrapper {
 
 	switch sc.Environment {
 	case "UAT":
@@ -51,8 +51,8 @@ func (sc *ServiceConfigs) LoadDynamoDBConfigs() *dynamo_lib.Wrapper {
 	return dynamoDBInstance
 }
 
-//RabbitMQ configs
-func (sc *ServiceConfigs) LoadRabbitMQConfigs() *rabbitmq.DefaultQueueClient {
+//Loads rabbitMQ configs and builds a client version
+func (sc *ServiceConfigs) SetRabbitMQConfigsAndBuild() *rabbitmq.DefaultQueueClient {
 
 	client := &rabbitmq.DefaultQueueClient{}
 	client.SetupURL(sc.BrokerUrl)
@@ -60,8 +60,8 @@ func (sc *ServiceConfigs) LoadRabbitMQConfigs() *rabbitmq.DefaultQueueClient {
 	return client
 }
 
-//S3 configs
-func (sc *ServiceConfigs) LoadS3BucketConfigs() *s3.DefaultBucketClient {
+//Loads S3 bucket configs and builds a client version
+func (sc *ServiceConfigs) SetS3BucketConfigsAndBuild() *s3.DefaultBucketClient {
 
 	client := &s3.DefaultBucketClient{}
 	client.SetConfigs(sc.S3Config)
