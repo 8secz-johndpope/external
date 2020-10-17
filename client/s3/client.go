@@ -25,6 +25,7 @@ type DefaultBucketClient struct {
 	configs *models.S3Configs
 }
 
+//Loads the S3 Key and creates a new session
 func (c *DefaultBucketClient) Init() {
 
 	if c.configs == nil {
@@ -131,13 +132,13 @@ func (c *DefaultBucketClient) PutEncryption(key string) (*s3.PutBucketEncryption
 	return result, err
 }
 
+//Sets configs which are loaded on the API
 func (c *DefaultBucketClient) SetConfigs(cfg *models.S3Configs) {
 
 	if cfg != nil {
 		c.configs = cfg
 	}
 }
-
 
 //Custom made error
 func HandleError(err error) bool {

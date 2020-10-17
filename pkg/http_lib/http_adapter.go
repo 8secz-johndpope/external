@@ -28,27 +28,25 @@ func Delete(url string, body []byte, headers map[string]string) (*http.Response,
 
 //to avoid duplication in other functions
 func HttpRequest(url string, body []byte, headers map[string]string, method string) (*http.Response, error) {
-	post, err := http.NewRequest(method, url, bytes.NewBuffer(body))
+	req, reqErr := http.NewRequest(method, url, bytes.NewBuffer(body))
+
+	if reqErr != nil {
+		return nil, reqErr
+	}
 
 	if headers != nil && len(headers) > 0 {
 		for k, v := range headers {
 			fmt.Println("k:", k, "v:", v)
-			post.Header.Set(k, v)
+			req.Header.Set(k, v)
 		}
 	}
 
 	client := &http.Client{}
-	resp, err := client.Do(post)
+	resp, resErr := client.Do(req)
 
-	if err != nil {
-		return nil, err
+	if resErr != nil {
+		return nil, resErr
 	}
 
-	//if resp.StatusCode != 200 {
-	//	return nil, &ErrorString{
-	//		Reason: resp.Status,
-	//		Code:   resp.StatusCode,
-	//	}
-	//}
 	return resp, nil
 }
