@@ -71,6 +71,7 @@ func (dqc *DefaultQueueClient) CreateExchange(client *http.Client, exchange mode
 	return client.Post(dqc.url+"/exchange", "application/json", bytes.NewBuffer(body))
 }
 
+//Binds a Queue to a specific key, e.g. key email_conf comes, it gets bind to customer queue
 func (dqc *DefaultQueueClient) QueueBind(client *http.Client, bind models.QueueBind) (resp *http.Response, err error) {
 	body, err := json.Marshal(bind)
 	if err != nil {
@@ -108,6 +109,7 @@ func (dqc *DefaultQueueClient) SetupRoute(router *mux.Router, route string, clie
 	router.HandleFunc(route, handleResponse(hm, client, dqc)).Methods("POST")
 }
 
+//To which queue the service wants to subscribe
 func (dqc DefaultQueueClient) Subscribe(client *http.Client, subscribe models.QueueSubscribe) (resp *http.Response, err error) {
 	body, err := json.Marshal(subscribe)
 	if err != nil {
@@ -126,6 +128,7 @@ func (dqc *DefaultQueueClient) UnSubscribe(client *http.Client, subscribeID mode
 	return client.Post(dqc.url+"/unsubscribe", "application/json", bytes.NewBuffer(body))
 }
 
+//Message received successfully
 func (dqc *DefaultQueueClient) acknowledge(client *http.Client, acknowledge models.MessageAcknowledge) (resp *http.Response, err error) {
 	body, err := json.Marshal(acknowledge)
 	if err != nil {
