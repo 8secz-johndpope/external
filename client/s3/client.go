@@ -77,15 +77,17 @@ func (c *DefaultBucketClient) UploadFile(r *http.Request, name string) (*s3manag
 			log.Println("uploader created")
 
 			// Perform upload with multipart
-			result, UErr := uploader.Upload(input, func(u *s3manager.Uploader) {
+			result, uErr := uploader.Upload(input, func(u *s3manager.Uploader) {
 				u.PartSize = c.configs.PartSize
 				u.LeavePartsOnError = true    // Don't delete the parts if the upload fails.
 			})
 
-			if !HandleError(UErr){
+			if !HandleError(uErr){
 				log.Printf("%+v",result)
 				return result, nil
 			}
+
+			return nil, uErr
 		}
 		return nil, fErr
 	}
@@ -109,8 +111,11 @@ func (c *DefaultBucketClient) DownloadFile(name string) (*os.File,error) {
 		SSECustomerKey : aws.String(c.configs.Key),
 
 	})
-	if !HandleError(err) {
-		return file, err
+
+	//if there is an error
+	if HandleError(err) {
+		os.Remove(c.configs.DownloadLocation + name)
+		return nil, err
 	}
 
 	return file, nil
